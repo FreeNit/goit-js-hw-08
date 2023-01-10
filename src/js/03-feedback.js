@@ -1,4 +1,5 @@
 var throttle = require('lodash.throttle');
+var validator = require('validator');
 
 const emailEl = document.querySelector('input[name=email]');
 const textAreaEl = document.querySelector('textarea[name=message]');
@@ -44,12 +45,10 @@ function stringifyData(data) {
 function handlerFormElements(event) {
   if (event.target.type === 'email') {
     userData.email = event.target.value;
-    console.log(userData);
     localStorage.setItem('feedback-form-state', stringifyData(userData));
   }
   if (event.target.type === 'textarea') {
     userData.message = event.target.value;
-    console.log(userData);
     localStorage.setItem('feedback-form-state', stringifyData(userData));
   }
 }
@@ -59,14 +58,19 @@ formEl.addEventListener('input', throttle(handlerFormElements, 500));
 
 // show local storage and reset form`s input fields
 btnSubmit.addEventListener('click', () => {
-  let stringifyData;
-  try {
-    stringifyData = JSON.stringify(userData);
-    console.log(stringifyData);
-  } catch (error) {
-    console.log(error.name);
-    console.log(error.message);
+  if (!emailEl.value || !textAreaEl.value) {
+    alert('All fields should be filled in');
+  } else if (!validator.isEmail(emailEl.value)) {
+    alert('Please, enter correct email address');
+  } else {
+    try {
+      const parseData = JSON.parse(localStorage['feedback-form-state']);
+      console.log(parseData);
+    } catch (error) {
+      console.log(error.name);
+      console.log(error.message);
+    }
+    formEl.reset();
+    localStorage.clear();
   }
-  formEl.reset();
-  localStorage.clear();
 });
