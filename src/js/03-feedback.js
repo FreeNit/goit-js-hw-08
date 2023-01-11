@@ -8,8 +8,8 @@ const btnSubmit = document.querySelector('button[type=submit]');
 
 // object for saving user`s input value
 const userData = {
-  email: emailEl.value,
-  message: textAreaEl.value,
+  email: '',
+  message: '',
 };
 
 // prevent form from default behavior
@@ -26,6 +26,10 @@ if (localStorage.length === 0) {
     const { email, message } = JSON.parse(localStorage['feedback-form-state']);
     emailEl.value = email;
     textAreaEl.value = message;
+
+    userData.email = email;
+    userData.message = message;
+    console.log(userData);
   } catch (error) {
     console.log(error.name);
     console.log(error.message);
