@@ -29,7 +29,6 @@ if (localStorage.length === 0) {
 
     userData.email = email;
     userData.message = message;
-    console.log(userData);
   } catch (error) {
     console.log(error.name);
     console.log(error.message);
@@ -76,5 +75,9 @@ btnSubmit.addEventListener('click', () => {
     }
     formEl.reset();
     localStorage.clear();
+    // clear userData obj
+    for (let key in userData) {
+      userData[key] = '';
+    }
   }
 });
